@@ -30,16 +30,16 @@ public class Mato {
 
     public Mato() {
         this.muuta = true;
-        this.suunta = Suunta.VASEN;
+        this.suunta = Suunta.OIKEA;
         this.palat = new ArrayList<>();
-        paa = new Pala(15, 15, null);
+        paa = new Pala(1, 1, null);
         palat.add(paa);
-//        Pala ekapala = new Pala(26, 10, paa);
-//        palat.add(ekapala);
-//        Pala tokapala = new Pala(27, 10, ekapala);
-//        palat.add(tokapala);
-//        Pala kolmaspala = new Pala(28, 10, tokapala);
-//        palat.add(kolmaspala);
+        Pala ekapala = new Pala(palat.get(0).getX(), palat.get(0).getY()+1, paa);
+        palat.add(ekapala);
+        Pala tokapala = new Pala(palat.get(0).getX(), palat.get(0).getY()+2, ekapala);
+        palat.add(tokapala);
+        Pala kolmaspala = new Pala(palat.get(0).getX(), palat.get(0).getY()+3, tokapala);
+        palat.add(kolmaspala);
     }
 
     public void setSuunta(Suunta su) {
@@ -47,21 +47,24 @@ public class Mato {
             if (this.suunta == Suunta.YLOS) {
                 if (su == Suunta.VASEN || su == Suunta.OIKEA) {
                     this.suunta = su;
+                    muuta=false;
                 }
             } else if (this.suunta == Suunta.ALAS) {
                 if (su == Suunta.VASEN || su == Suunta.OIKEA) {
                     this.suunta = su;
+                    muuta=false;
                 }
             } else if (this.suunta == Suunta.VASEN) {
                 if (su == Suunta.YLOS || su == Suunta.ALAS) {
                     this.suunta = su;
+                    muuta=false;
                 }
             } else if (this.suunta == Suunta.OIKEA) {
                 if (su == Suunta.ALAS || su == Suunta.YLOS) {
                     this.suunta = su;
+                    muuta=false;
                 }
             }
-            muuta=false;
         }
     }
 

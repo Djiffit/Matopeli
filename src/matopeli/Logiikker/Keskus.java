@@ -22,12 +22,14 @@ public class Keskus {
     private int state;
     private int resoX;
     private int resoY;
+    private int pisteet;
 
     public Mato getMato() {
         return mato;
     }
     private int leveys;
     private int k;
+    private int laskuri;
     private int korkeus;
 
     public int getLeveys() {
@@ -80,30 +82,42 @@ public class Keskus {
         this.havio = false;
         this.mato = new Mato();
         this.palat = mato.getPalat();
-        this.ruoka = new Ruoka(15, 5);
+        this.ruoka = new Ruoka(2, 2);
+        this.pisteet = 0;
+        this.laskuri = 600/paivitysvali;
+        
     }
 
     public void setState(int state) {
         this.state = state;
+        this.mato = new Mato();
+        this.palat = mato.getPalat();
+        this.ruoka = new Ruoka(palat, leveys, korkeus);
     }
 
     public void setKakkonen(boolean kakkonen) {
         this.kakkonen = kakkonen;
     }
 
+    public int getPisteet() {
+        return pisteet;
+    }
+
     public void Paivitys() {
-        while (k < 0) {
-            ruoka.annaKoordinaatit(palat.get(0).getX() - 5, 5);
-            k++;
+        if (this.laskuri == 0) {
+            this.pisteet--;
+            this.laskuri = 600/paivitysvali;
+        } else {
+            this.laskuri--;
         }
         boolean sy = false;
         Pala pala = new Pala(1, 2, null);
-        System.out.println(palat.get(0).getX() + " " + palat.get(0).getY() + " mato" + ruoka.getX() + " " + ruoka.getY());
         if (palat.get(0).getX() == ruoka.getX() && palat.get(0).getY() == ruoka.getY()) {
             int monta = palat.size();
             pala = new Pala(palat.get(monta - 1).getX(), palat.get(monta - 1).getY(), palat.get(monta - 1));
             sy = true;
             ruoka = new Ruoka(palat, leveys, korkeus);
+            pisteet += 8;
         }
         mato.liiku();
         for (int i = palat.size() - 1; i >= 1; i--) {
@@ -144,22 +158,26 @@ public class Keskus {
                 }
 
             }
-        }
-        if (!kakkonen) {
-            if (palat.size() >= 2) {
-
+        } else {
+            if (palat.size() > 3) {
                 if (paax == 0 || paay == 0 || paax >= leveys || paay >= korkeus) {
                     this.havio = true;
                     this.state = 0;
                 }
             }
         }
-    
+    }
 
-}
+    public void setHavio(boolean havio) {
+        this.havio = havio;
+    }
 
-public int getPaivitysvali() {
+    public int getPaivitysvali() {
         return paivitysvali;
+    }
+
+    public boolean isKakkonen() {
+        return kakkonen;
     }
 
     public void setPaivitysvali(int paivitysvali) {
